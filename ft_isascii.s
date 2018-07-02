@@ -2,6 +2,8 @@ section .text
 global _ft_isascii
 
 _ft_isascii:
+
+entry:
     cmp rdi, 0
     jge last_ascii
     jmp isnotascii
