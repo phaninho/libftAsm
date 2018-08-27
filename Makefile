@@ -9,10 +9,10 @@ SRC_DIR			=	srcs
 SRC				=	$(call rwildcard, $(SRC_DIR), *.s)
 OBJ				=	$(addprefix $(OBJ_DIR)/, $(SRC:.s=.o))
 
-TESTS_NAME		=	libfts_tests
-TESTS_SRC_DIR	=	tests
-TESTS_SRC		=	$(call rwildcard, $(TESTS_SRC_DIR), *.cpp)
-TESTS_OBJ		=	$(addprefix $(OBJ_DIR)/, $(TESTS_SRC:.cpp=.o))
+# TESTS_NAME		=	libfts_tests
+# TESTS_SRC_DIR	=	tests
+# TESTS_SRC		=	$(call rwildcard, $(TESTS_SRC_DIR), *.cpp)
+# TESTS_OBJ		=	$(addprefix $(OBJ_DIR)/, $(TESTS_SRC:.cpp=.o))
 
 ASSEMBLER		=	nasm
 COMPILER		=	g++

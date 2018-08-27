@@ -6,6 +6,13 @@ extern _ft_isdigit
 
 _ft_isalnum:
 
+; int ft_isalnum(int c);
+;
+; rdi -> int c
+;
+; rax -> return val
+
+
 entry:
     call _ft_isalpha
     cmp rax, 1

@@ -1,55 +1,58 @@
 section .data
 
-null_str    db      "(null)",0xa
-null_len    equ     $-null_str
-endl        db      0xa
+nullstr:    db  '(null)',0xa    ;   constant string "(null)\n"
+nullstrlen: equ ($ - nullstr)   ;   constant len ($ = cur address)
+endlstr:    db  0xa             ;   constant string "\n"
 
 section .text
-
 global _ft_puts
 
 extern _ft_strlen
 
-%define SYS_exit    0x2000001
-%define SYS_write   0x2000004
-%define STDOUT_FILENO 1
+%define EOF -1
+%define SYS_write 0x2000004
 
+; int ft_puts(const char *str);
+;
+; rdi -> const char *str
+;
+; rax -> return val
 _ft_puts:
+    cmp     rdi,        0               ;   if (str == 0)
+    je      write_null                  ;       write(1, nullstr, nullstrlen);
+    mov     r8,         rdi             ;   r8 = str;
+    call    _ft_strlen                  ;   ft_strlen(str);
+    mov     r9,         rax             ;   r9 = ft_strlen(str);
 
-entry:
-    cmp rdi, 0
-    je error
-    mov rax, rdi
-    call _ft_strlen
-    mov rdx, rax
-    mov rax, SYS_write
-    mov rsi, rdi
-    mov rdi, 1
-    ; syscall
-    ;
-    ; mov rax, SYS_exit
-    syscall
-    jc      end
+write:
+    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
+    mov     rdi,        1               ;   write(1,
+    mov     rsi,        r8              ;         r8,
+    mov     rdx,        r9              ;         r9,
+    syscall                             ;   );
+    jc      return_eof                  ;   if (write fail) return (EOF);
 
-write_nl:
-    mov     rax,    SYS_write       ; write(
-    mov     rdi,    STDOUT_FILENO   ;   STDOUT_FILENO,
-    mov     rsi,    endl            ;   "\n",
-    mov     rdx,    1               ;   1)
-    syscall
-    jc      end
-    jmp     ret_success
+write_endl:
+    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
+    mov     rdi,        1               ;   write(1,
+    lea     rsi,        [rel endlstr]   ;         endlstr,      (lea = Load Effective Address, rel = relative address)
+    mov     rdx,        1               ;         1,
+    syscall                             ;   );
+    jc      return_eof                  ;   if (write fail) return (EOF);
+    jmp     return_true                 ;
 
-error:
-    mov     rax,    SYS_write       ; write(
-    mov     rdi,    STDOUT_FILENO   ;   STDOUT_FILENO,
-    mov     rsi,    null_str        ;   null_str,
-    mov     rdx,    null_len        ;   null_len)
-    syscall
-    jc      end
+write_null:
+    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
+    mov     rdi,        1               ;   write(1,
+    lea     rsi,        [rel nullstr]   ;         nullstr,      (lea = Load Effective Address, rel = relative address)
+    mov     rdx,        nullstrlen      ;         nullstrlen,
+    syscall                             ;   );
+    jmp     return_eof                  ;   return (EOF);
 
-ret_success:
-    mov     rax,    10              ; always ret 10 on success
+return_true:
+    mov     rax,        1
+    ret                                 ;   return (1);
 
-end:
-    ret
+return_eof:
+    mov     rax,        EOF
+    ret                                 ;   return (EOF);
