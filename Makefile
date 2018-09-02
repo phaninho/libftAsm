@@ -1,64 +1,69 @@
-rwildcard		=	$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2)\
-					$(filter $(subst *,%,$2),$d))
+SRC_PATH = ./srcs/
+OBJ_PATH = ./obj/
+INC_PATH = ./inc/
 
-NAME			=	libfts.a
-OBJ_DIR			=	objs
+SRC_NAME =	ft_bzero.s \
+			ft_strcat.s \
+			ft_isalpha.s \
+			ft_isdigit.s \
+			ft_isalnum.s \
+			ft_isascii.s \
+			ft_isprint.s \
+			ft_toupper.s \
+			ft_tolower.s \
+			ft_puts.s \
+			\
+			ft_strlen.s \
+			ft_memset.s \
+			ft_memcpy.s \
+			ft_strdup.s
 
-LIB_NAME		=	fts
-SRC_DIR			=	srcs
-SRC				=	$(call rwildcard, $(SRC_DIR), *.s)
-OBJ				=	$(addprefix $(OBJ_DIR)/, $(SRC:.s=.o))
+TEST_SRC_NAME = main.cpp
+OBJ_NAME = $(SRC_NAME:.s=.o)
+NAME = libfts.a
+TEST_NAME = test
 
-# TESTS_NAME		=	libfts_tests
-# TESTS_SRC_DIR	=	tests
-# TESTS_SRC		=	$(call rwildcard, $(TESTS_SRC_DIR), *.cpp)
-# TESTS_OBJ		=	$(addprefix $(OBJ_DIR)/, $(TESTS_SRC:.cpp=.o))
+SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
+INC = $(addprefix -I ,$(INC_PATH))
 
-ASSEMBLER		=	nasm
-COMPILER		=	g++
-AFLAGS			=	-f macho64
-CFLAGS			=	-Wall -Wextra -Werror -O3 -std=c++1y -c
-LFLAGS			=	-L. -l$(LIB_NAME) -Wl,-no_pie
+LIB = -L . -lfts
 
-OBJ_SUB_DIRS	=	$(dir $(OBJ))
-OBJ_SUB_DIRS	+=	$(dir $(TESTS_OBJ))
+CC = g++
+ASM = nasm
+
+AFLAGS = -f macho64
+CFLAGS = -MMD -Wall -Wextra -Werror
 
 all:
-	@$(MAKE) $(NAME)
-	@$(MAKE) $(TESTS_NAME)
+	@echo "\033[32;44m Make $(NAME) \033[0m"
+	@make $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "linking archive $@"
-	@ar rc $@ $^
-	@ranlib $@
+	ar rc $@ $^
+	ranlib $@
 
-$(OBJ): | $(OBJ_DIR)
+$(OBJ_PATH)%.o: $(SRC_PATH)%.s
+	@mkdir -p $(OBJ_PATH)
+	$(ASM) $(AFLAGS) -o $@ $<
 
-$(OBJ_DIR):
-	@$(foreach dir, $(OBJ_SUB_DIRS), mkdir -p $(dir);)
+$(TEST_NAME): $(OBJ) $(TEST_SRC_NAME)
+	$(CC) $(CFLAGS) $(INC) $(LIB) $(TEST_SRC_NAME) -o $@
 
-$(OBJ_DIR)/%.o: %.s
-	@echo "assembling $(notdir $<)"
-	@$(ASSEMBLER) $(AFLAGS) $< -o $@
-
-$(TESTS_NAME): $(NAME) $(TESTS_OBJ)
-	@echo "linking $@"
-	@$(COMPILER) $(LFLAGS) $^ -o $@
-
-$(OBJ_DIR)/%.o: %.cpp
-	@echo "compiling $(notdir $<)"
-	@$(COMPILER) $(CFLAGS) $< -o $@
+run: all $(TEST_NAME)
+	./$(TEST_NAME)
 
 clean:
-	@echo "cleaning objects"
-	@rm -rf $(OBJ_DIR)
+	@echo "\033[31;44m Make clean $(NAME) \033[0m"
+	rm -rf $(OBJ_PATH)
 
 fclean: clean
-	@echo "cleaning $(NAME)"
-	@rm -f $(NAME)
-	@echo "cleaning $(TESTS_NAME)"
-	@rm -f $(TESTS_NAME)
+	@echo "\033[31;44m Make fclean $(NAME) \033[0m"
+	rm -f $(NAME)
+	rm -f $(TEST_NAME)
 
-re:
-	@$(MAKE) fclean
-	@$(MAKE) all
+re: fclean all
+
+-include $(OBJ:.o=.d)
+
+.PHONY: lib clean fclean re
