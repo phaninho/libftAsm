@@ -11,3 +11,4 @@ _ft_putstr_len:
 	mov rax, SYS_write	; write syscall
 	syscall
 	ret
+	
