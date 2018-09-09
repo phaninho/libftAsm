@@ -19,6 +19,7 @@ extern "C"
 	int	ft_isdigit(int c);
 	int ft_puts(const char *str);
 	void ft_cat(int fd);
+    void ft_putstr_len(const char* str, size_t len);
 }
 
 int main(int ac, char **av)

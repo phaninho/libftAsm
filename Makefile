@@ -18,8 +18,11 @@ SRC_NAME =	ft_bzero.s \
 			ft_memcpy.s \
 			ft_strdup.s \
 			\
-			ft_cat.s\
-			ft_putstr.s
+			ft_cat.s \
+			\
+			ft_putstr.s \
+			ft_putstr_len.s \
+			ft_debug.s
 
 
 TEST_SRC_NAME = main.cpp
@@ -55,7 +58,7 @@ $(TEST_NAME): $(OBJ) $(TEST_SRC_NAME)
 	$(CC) $(CFLAGS) $(INC) $(LIB) $(TEST_SRC_NAME) -o $@
 
 run: all $(TEST_NAME)
-	./$(TEST_NAME) Makefile
+	./$(TEST_NAME) lol
 
 clean:
 	@echo "\033[31;44m Make clean $(NAME) \033[0m"

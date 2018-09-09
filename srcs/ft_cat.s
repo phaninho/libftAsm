@@ -7,11 +7,11 @@ section .bss
 section .text
 global _ft_cat
 
+extern _ft_putstr_len
+
 %define SYS_read    0x2000003
-%define SYS_write   0x2000004
 
 _ft_cat:
-    ; push    r12
     mov     r8, rdi
 
 read:
@@ -20,20 +20,16 @@ read:
     mov     rdx, buffsize
     mov     rax, SYS_read
     syscall
-    jc      return
+    ;jc      return
     cmp     rax, 0
-    je      return
+    jle     return
     mov     r9, rax
 
 write:
-    mov     rdi, 1
-    ; mov     rsi, buf
-    mov     rdx, r9
-    mov     rax, SYS_write
-    syscall
-    jc      return
+    mov rdi, rsi
+	mov rsi, r9
+    call _ft_putstr_len
     jmp     read
 
 return:
-    ; pop     r12
     ret
