@@ -10,19 +10,19 @@ global _ft_memset
 ; rax -> return val
 
 _ft_memset:
-	mov		r8,			rdi	;	r8 = rdi (void *mem)
-							;(on garde l'adresse du pointeur)
-    cmp     rdx,        0   ;   if (len == 0)
-    je      return          ;       return;
+	cmp rdx, 0		; if (rdx == 0) { if (c == 0)}
+		je return	; return (rdi)  {return(mem) }
 
-set:
-	mov     rax,    rsi		;	rax = rsi (int c)
-    mov     rcx,    rdx		;	rcx = rdx (size_t len)
-    cld						;	cld: direction flag -> ++, std: direction flag -> --
-    rep		stosb			;	repeat *rdi = c, ++rdi
+loop:
+	mov rax, rsi	;STOS utilise RAX pour savoir quoi stocker dans RDI
+	mov rcx, rdx	; et RCX pour connaitre sur combien de bit les stocker
+	cld				;flag pour incrementer RDI et RSI (l'inverse est STD)
+	rep stosb		;	while (index < rcx)
+					;	{
+					;		rdi[index] = rax;
+					;		index++;
+					;	}
 
 return:
-	mov		rax,	r8
-    ret                     ;   return(mem);
-
-; stosb = STOre String Byte
+	mov rax, rdi	; rax = rdi
+	ret				; return (rax);

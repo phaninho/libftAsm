@@ -10,7 +10,8 @@ global _ft_memcpy
 ; rax -> return val
 
 _ft_memcpy:
-    mov r8, rdi
+    mov r8, rdi     ;a cause de movsb rdi va etre incrementé donc on
+                    ;stock le pointeur
     cmp rdx, 0
         je return
 
@@ -22,5 +23,5 @@ cpy:
                     ;*rdi = *rsi, ++rdi, ++rsi
 
 return:
-    mov rax, r8
+    mov rax, r8     ;on recupere l'adresse du debut de la string
     ret

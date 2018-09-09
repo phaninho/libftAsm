@@ -5,12 +5,12 @@ _ft_isdigit:
 
 entry:
     cmp rdi, '0'
-    jge check_last_digit
+    jge check_last_digit    ;jump greater or equal
     jmp isnotdigit
 
 check_last_digit:
     cmp rdi, '9'
-    jle isdigit
+    jle isdigit             ;jump lower or equal
     jmp isnotdigit
 
 isdigit:

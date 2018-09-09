@@ -16,7 +16,11 @@ SRC_NAME =	ft_bzero.s \
 			ft_strlen.s \
 			ft_memset.s \
 			ft_memcpy.s \
-			ft_strdup.s
+			ft_strdup.s \
+			\
+			ft_cat.s\
+			ft_putstr.s
+
 
 TEST_SRC_NAME = main.cpp
 OBJ_NAME = $(SRC_NAME:.s=.o)
@@ -51,7 +55,7 @@ $(TEST_NAME): $(OBJ) $(TEST_SRC_NAME)
 	$(CC) $(CFLAGS) $(INC) $(LIB) $(TEST_SRC_NAME) -o $@
 
 run: all $(TEST_NAME)
-	./$(TEST_NAME)
+	./$(TEST_NAME) Makefile
 
 clean:
 	@echo "\033[31;44m Make clean $(NAME) \033[0m"
@@ -61,6 +65,7 @@ fclean: clean
 	@echo "\033[31;44m Make fclean $(NAME) \033[0m"
 	rm -f $(NAME)
 	rm -f $(TEST_NAME)
+	rm -f $(TEST_NAME).d
 
 re: fclean all
 

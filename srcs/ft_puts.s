@@ -25,27 +25,27 @@ _ft_puts:
     mov     r9,         rax             ;   r9 = ft_strlen(str);
 
 write:
-    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
     mov     rdi,        1               ;   write(1,
-    mov     rsi,        r8              ;         r8,
-    mov     rdx,        r9              ;         r9,
-    syscall                             ;   );
-    jc      return_eof                  ;   if (write fail) return (EOF);
+    mov     rsi,        r8              ;         str,
+    mov     rdx,        r9              ;         len);
+    mov     rax,        SYS_write       ; write syscall
+    syscall                             ; write(int fd, const void *buf, size_t len);
+    jc      return_eof                  ; Jump if carry; if (error) return (EOF);
 
 write_endl:
-    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
     mov     rdi,        1               ;   write(1,
-    lea     rsi,        [rel endlstr]   ;         endlstr,      (lea = Load Effective Address, rel = relative address)
+    lea     rsi,        [rel endlstr]   ;         endlstr,(lea = Load Effective Address, rel = relative address)
     mov     rdx,        1               ;         1,
+    mov     rax,        SYS_write       ; write syscall
     syscall                             ;   );
     jc      return_eof                  ;   if (write fail) return (EOF);
     jmp     return_true                 ;
 
 write_null:
-    mov     rax,        SYS_write       ;   size_t write(int fd, const void *buf, size_t count);
     mov     rdi,        1               ;   write(1,
-    lea     rsi,        [rel nullstr]   ;         nullstr,      (lea = Load Effective Address, rel = relative address)
+    lea     rsi,        [rel nullstr]   ;         nullstr,(lea = Load Effective Address, rel = relative address)
     mov     rdx,        nullstrlen      ;         nullstrlen,
+    mov     rax,        SYS_write       ; write syscall
     syscall                             ;   );
     jmp     return_eof                  ;   return (EOF);
 

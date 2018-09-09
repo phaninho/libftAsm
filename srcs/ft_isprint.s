@@ -5,12 +5,12 @@ _ft_isprint:
 
 entry:
     cmp rdi, 32
-    jge last_isprint
+    jge last_isprint    ;jump greater or equal
     jmp isnotprint
-    
+
 last_isprint:
     cmp rdi, 126
-    jle isprint
+    jle isprint         ;jump lower or equal
 
 isprint:
     mov rax, 1

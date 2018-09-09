@@ -14,10 +14,10 @@ _ft_isalnum:
 
 
 entry:
-    call _ft_isalpha
+    call _ft_isalpha             ;rax = ft_isalpha(rdi)
     cmp rax, 1
     je isalnum
-    call _ft_isdigit
+    call _ft_isdigit              ;rax = ft_isdigit(rdi)
     cmp rax, 1
     je isalnum
     jmp isnotalnum
