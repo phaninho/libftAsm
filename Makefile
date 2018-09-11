@@ -22,8 +22,10 @@ SRC_NAME =	ft_bzero.s \
 			\
 			ft_putstr.s \
 			ft_putstr_len.s \
-			ft_debug.s
-
+			ft_debug.s	\
+			ft_strchr.s \
+			ft_strchr_len.s \
+			ft_memalloc.s
 
 TEST_SRC_NAME = main.cpp
 OBJ_NAME = $(SRC_NAME:.s=.o)

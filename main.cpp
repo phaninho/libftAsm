@@ -20,11 +20,23 @@ extern "C"
 	int ft_puts(const char *str);
 	void ft_cat(int fd);
     void ft_putstr_len(const char* str, size_t len);
+	char *ft_strchr(char *str, char c);
+	int	ft_strchr_len(char *str, char c);
+	char *ft_memalloc(int i);
 }
 
 int main(int ac, char **av)
 {
 	char *a = ft_strdup("hello");
+	char *s = ft_memalloc(42);
+	for (int i = 0; i < 42; i++)
+		s[i] = 'a';
+	s[41] = '\0';
+
+	free(s);
+	std::cout << "test memalloc(42) => " << s << std::endl;
+	std::cout << "strchr cherche e dans hello => " << ft_strchr(a, 'e') << std::endl;
+	std::cout << "strchr_len cherche e dans hello => " << ft_strchr_len(a, 'e') << std::endl;
 
 	ft_puts("\ntest de la fonction ft_puts avec une variable qui s'est faite strdup\n");
 	ft_puts(a);
@@ -69,5 +81,7 @@ int main(int ac, char **av)
 	}
 	else
 		std::cout << "ajouter un argument pour tester la fonction cat" << std::endl;
+	free(a);
+	free(b);
 	return 0;
 }
