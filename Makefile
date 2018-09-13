@@ -20,6 +20,7 @@ SRC_NAME =	ft_bzero.s \
 			\
 			ft_cat.s \
 			\
+			ft_putchar.s \
 			ft_putstr.s \
 			ft_putstr_len.s \
 			ft_debug.s	\

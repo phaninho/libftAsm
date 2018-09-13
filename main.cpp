@@ -23,6 +23,7 @@ extern "C"
 	char *ft_strchr(char *str, char c);
 	int	ft_strchr_len(char *str, char c);
 	char *ft_memalloc(int i);
+	void ft_putchar(char c);
 }
 
 int main(int ac, char **av)
@@ -30,11 +31,16 @@ int main(int ac, char **av)
 	char *a = ft_strdup("hello");
 	char *s = ft_memalloc(42);
 	for (int i = 0; i < 42; i++)
+	{
 		s[i] = 'a';
+		ft_putchar('a');
+		// ft_putstr_len(&s[i - 1], 1);
+	}
 	s[41] = '\0';
-
-	free(s);
+	ft_putchar('b');
 	std::cout << "test memalloc(42) => " << s << std::endl;
+	free(s);
+
 	std::cout << "strchr cherche e dans hello => " << ft_strchr(a, 'e') << std::endl;
 	std::cout << "strchr_len cherche e dans hello => " << ft_strchr_len(a, 'e') << std::endl;
 
