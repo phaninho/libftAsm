@@ -10,7 +10,7 @@ entry:
 
 last_isprint:
     cmp rdi, 126
-    jle isprint         ;jump lower or equal
+    jg isnotprint         ;jump lower or equal
 
 isprint:
     mov rax, 1

@@ -11,6 +11,7 @@ entry:
 last_ascii:
     cmp rdi, 127
     jle isascii         ;jump lower or equal
+    jmp isnotascii
 
 isascii:
     mov rax, 1

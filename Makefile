@@ -61,7 +61,7 @@ $(TEST_NAME): $(OBJ) $(TEST_SRC_NAME)
 	$(CC) $(CFLAGS) $(INC) $(LIB) $(TEST_SRC_NAME) -o $@
 
 run: all $(TEST_NAME)
-	./$(TEST_NAME) lol
+	./$(TEST_NAME) toto
 
 clean:
 	@echo "\033[31;44m Make clean $(NAME) \033[0m"

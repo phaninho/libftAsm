@@ -7,11 +7,13 @@ global _ft_bzero
 ;             rdi          rsi
 
 _ft_bzero:
+    push rdi
+	cmp rdi, 0
+	je return
     cmp rsi, 0
     je return
 
 loop:
-    push rdi
     mov rcx, rsi
     mov rax, 0
     cld

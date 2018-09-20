@@ -11,6 +11,7 @@ entry:
 last_letter:
     cmp rdi, 'Z'
     jle tolower
+    jmp notletter
 
 tolower:
     add rdi, 32
